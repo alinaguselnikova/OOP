@@ -1,6 +1,5 @@
     package ru.nsu.fit;
 
-
     public  class HeapSort {
 
         /**  Сортировка массива
