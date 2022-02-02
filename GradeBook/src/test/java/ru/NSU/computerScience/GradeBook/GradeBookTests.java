@@ -27,22 +27,32 @@ public class GradeBookTests {
 
         @Test
         public void testisScholarship(){
-            Gradebook book = new Gradebook();
-            book.grade("Russian language", 1, 5);
+            book.grade("Mathematical analysis", 1, 5);
             book.grade("History", 1, 5);
-            book.grade("Programming", 1, 5);
+            book.grade("Imperative programming", 1, 5);
             Assertions.assertTrue(book.isScholarship(1));
         }
 
         @Test
         public void testHonorDiploma() {
-            book.grade("Math", 1, 4);
+            book.grade("Mathematical analysis", 1, 4);
             book.grade("History", 2, 5);
             book.grade("Russian Language", 2, 5);
-            book.grade("Programming", 1, 5);
+            book.grade("Imperative programming", 1, 5);
             book.grade("English", 1, 5);
             book.setQualificationGrade(5);
             Assertions.assertTrue(book.isHonorDiploma());
+        }
+
+        @Test
+        public void GoodGradesBadDiploma(){
+            book.grade("Math", 1, 4);
+            book.grade("History", 2, 5);
+            book.grade("Russian Language", 2, 5);
+            book.grade("Imperative Programming", 1, 5);
+            book.grade("English", 1, 5);
+            book.setQualificationGrade(4);
+            Assertions.assertFalse(book.isHonorDiploma());
         }
 
 }
