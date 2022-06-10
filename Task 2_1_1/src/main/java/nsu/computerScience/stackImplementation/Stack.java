@@ -5,9 +5,18 @@ import java.util.*;
 
 
 public class Stack<T> implements Iterable<T> {
-    public T[] stackArray = (T[]) new Object[10];
-    int size = 10;
-    int last = 0;
+     private T[] stackArray;
+     private int size;
+     private int last = 0;
+
+     Stack(int size) {
+         this.size = size;
+         stackArray = (T[]) new Object[size];
+     }
+
+     Stack(){
+         this(20);
+     }
 
     public void push(T element) {
         if (this.last >= stackArray.length) {

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -61,8 +62,10 @@ class StackTest {
     @Test
     public void testPushStack() {
         Stack<Integer> exStack = new Stack<>();
+
         exStack.push(5);
         exStack.push(4);
+        //exStack.stack = null;
         exStack.push(3);
         tStack.pushStack(exStack);
         Assertions.assertEquals(3, tStack.pop());
@@ -93,6 +96,11 @@ class StackTest {
         for (var elem : tStack) {
         Assertions.assertEquals(iter.next(), iterArr.next());
         }
+    }
+    @Test
+    public void TestIterator20(){
+        ArrayList <Integer> arr = new ArrayList <> ();
+         int size = 20;
     }
 
 }

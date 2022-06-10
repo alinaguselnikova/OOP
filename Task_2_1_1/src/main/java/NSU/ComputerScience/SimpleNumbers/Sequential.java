@@ -8,7 +8,8 @@ public class Sequential {
         long time_start = System.currentTimeMillis();
         boolean notPrime = false;
 
-        for (Integer integer : arr) {
+        for (int integer : arr) {
+            //System.out.println(integer);
             if (PrimeNumbers.isNotPrime(integer)) {
                 notPrime = true;
                 break;

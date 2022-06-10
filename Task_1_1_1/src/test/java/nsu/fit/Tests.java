@@ -46,5 +46,3 @@ public class Tests {
         assertThrows(IllegalArgumentException.class, () -> HeapSort.sort(input));
     }
 }
-
-

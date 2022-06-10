@@ -60,7 +60,7 @@ public class PrimeTest {
                 arr[i] = Integer.parseInt(strArr[i]);
                 //System.out.println(arr[i]);
             }
-            Assertions.assertFalse(PT.ThreadSearch(arr,3 ));
+            Assertions.assertFalse(PT.ThreadSearch(arr,1 ));
         }
 
 

@@ -9,10 +9,10 @@ public class ParallelStream {
     public static boolean ParallelSearch(Integer[] arr) {
         System.out.print("Parallel Stream = ");
         long time_start = System.currentTimeMillis();
-        List<Integer> list = Arrays.asList(arr);
+        //List<Integer> list = Arrays.stream(arr);
 
-        Optional <Integer> OpList = list
-                .parallelStream()
+        Optional <Integer> OpList = Arrays.stream(arr)
+                .parallel()
                 .filter(PrimeNumbers::isNotPrime)
                 .findFirst();
 

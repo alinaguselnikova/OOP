@@ -45,11 +45,13 @@ class PrimeRun implements Runnable {
     }
 
     public void run() {
-        for(int i: array) {
-            if (i % ParallelThread.THREADS == ID && PrimeNumbers.isNotPrime(i) && PrimeNumbers.isNotPrime(i-1))
+        for(int i = 0; i < array.length; i++) {
+            if (i % ParallelThread.THREADS == ID && PrimeNumbers.isNotPrime(array[i])) {
+                System.out.println(i);
                 ParallelThread.setIsNotPrime();
                 break;
             }
+        }
         }
     }
 
