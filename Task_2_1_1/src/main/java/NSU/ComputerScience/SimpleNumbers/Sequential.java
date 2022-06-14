@@ -4,7 +4,7 @@ public class Sequential {
 
 
     public static boolean SequentialSearch(Integer [] arr) {
-        System.out.print("Sequential = ");
+//        System.out.print("Sequential = ");
         long time_start = System.currentTimeMillis();
         boolean notPrime = false;
 
@@ -15,7 +15,7 @@ public class Sequential {
                 break;
             }
         }
-        System.out.println((System.currentTimeMillis() - time_start)  + "ms");
+//        System.out.println((System.currentTimeMillis() - time_start)  + "ms");
         return notPrime;
     }
 

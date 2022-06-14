@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/Numbers.txt", StandardCharsets.UTF_8));
         String[] strArr = reader.readLine().split(" ");
         Integer[] arr = new Integer[strArr.length];
@@ -20,7 +20,9 @@ public class Main {
 
         var seq = benchmarkRunnable(()->{Sequential.SequentialSearch(arr);}, 1000);
         var parallelStream = benchmarkRunnable(()->{ParallelStream.ParallelSearch(arr);}, 1000);
-        var threads_2 = benchmarkRunnable(()-)
+        var threads_2 = benchmarkRunnable(()->{ParallelThread.ThreadSearch(arr, 2);}, 1000);
+        System.out.printf("Sequential %f%nParallelStream %f%nThreads %f%n", seq, parallelStream, threads_2);
+        //System.out.println(threads_2);
     }
 
 
@@ -38,7 +40,7 @@ public class Main {
         }
         long totalTime = 0;
         for(int i = warmupIterations; i < totalRuns; i++){
-            totalTime += startTimes[i] - stopTimes[i];
+            totalTime += stopTimes[i] - startTimes[i];
         }
         return ((double) totalTime) / ((double) n);
     }

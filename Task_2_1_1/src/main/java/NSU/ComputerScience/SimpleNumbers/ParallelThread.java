@@ -8,12 +8,12 @@ public class ParallelThread {
     static boolean notPrime = false;
     public static Integer[] arr1;
 
-    public static boolean ThreadSearch(Integer[] arr, int NumberOfThreads) throws Exception {
+    public static boolean ThreadSearch(Integer[] arr, int NumberOfThreads) {
 //        System.out.print("Parallel Thread = ");
         long time_start = System.currentTimeMillis();
         if (NumberOfThreads > 0 && NumberOfThreads < THREADS) THREADS = NumberOfThreads;
         Thread[] thr = new Thread[THREADS];
-        arr1 = Arrays.copyOf(arr, arr.length);
+        arr1 = arr;
 
         for (int i = 0; i < THREADS; i++) {
             thr[i] = new Thread(new PrimeRun(i));
@@ -21,8 +21,12 @@ public class ParallelThread {
         }
 
         //one thread have to wait for another thread to finish
-        for (int i = 0; i < THREADS; i++)
-            thr[i].join();
+        try{
+            for (int i = 0; i < THREADS; i++){
+                thr[i].join();
+
+            }
+        }catch (InterruptedException ignored){}
 
 //        System.out.println((System.currentTimeMillis() - time_start) + "ms");
         return notPrime;
@@ -46,7 +50,7 @@ class PrimeRun implements Runnable {
     }
 
     public void run() {
-        for(int i = ID; i < array.length; i+=ID) {
+        for(int i = ID; i < array.length; i+=ParallelThread.THREADS) {
             if (PrimeNumbers.isNotPrime(array[i])) {
                 System.out.println(i);
                 ParallelThread.setIsNotPrime();
