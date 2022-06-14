@@ -2,13 +2,14 @@ package NSU.ComputerScience.SimpleNumbers;
 
 import java.util.Arrays;
 
+
 public class ParallelThread {
     static int THREADS = Runtime.getRuntime().availableProcessors();
     static boolean notPrime = false;
     public static Integer[] arr1;
 
     public static boolean ThreadSearch(Integer[] arr, int NumberOfThreads) throws Exception {
-        System.out.print("Parallel Thread = ");
+//        System.out.print("Parallel Thread = ");
         long time_start = System.currentTimeMillis();
         if (NumberOfThreads > 0 && NumberOfThreads < THREADS) THREADS = NumberOfThreads;
         Thread[] thr = new Thread[THREADS];
@@ -23,7 +24,7 @@ public class ParallelThread {
         for (int i = 0; i < THREADS; i++)
             thr[i].join();
 
-        System.out.println((System.currentTimeMillis() - time_start) + "ms");
+//        System.out.println((System.currentTimeMillis() - time_start) + "ms");
         return notPrime;
     }
         public static Integer[] getArray() {
@@ -45,8 +46,8 @@ class PrimeRun implements Runnable {
     }
 
     public void run() {
-        for(int i = 0; i < array.length; i++) {
-            if (i % ParallelThread.THREADS == ID && PrimeNumbers.isNotPrime(array[i])) {
+        for(int i = ID; i < array.length; i+=ID) {
+            if (PrimeNumbers.isNotPrime(array[i])) {
                 System.out.println(i);
                 ParallelThread.setIsNotPrime();
                 break;

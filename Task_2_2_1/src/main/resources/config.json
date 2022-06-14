@@ -1,6 +1,7 @@
 {
   "orderQueueSize": 10,
   "storageSize": 5,
+  "ackQueueSize": 100,
   "bakers": [
     {
       "name": "Vasya",

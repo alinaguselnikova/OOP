@@ -53,7 +53,14 @@ public class Game {
         return score;
     }
 
-    public Cell[][] getField() {
+    public ArrayList<List<Cell>> getField() {
+        var field = new ArrayList<List<Cell>>(height);
+        for (int y = 0; y < height; y++) {
+            field.add(new ArrayList<>(width));
+            for (int x = 0; x < width; x++) {
+                field.get(y).add(this.field[y][x]);
+            }
+        }
         return field;
     }
 
@@ -74,12 +81,13 @@ public class Game {
             return;
         }
         snake.add(0, nextPos);
+        setCell(nextPos, Cell.SNAKE);
         if (nextCell != Cell.FOOD) {
-            snake.remove(snake.size() - 1);
+            var lastCell =  snake.remove(snake.size() - 1);
+            setCell(lastCell, Cell.EMPTY);
         } else {
             score++;
         }
-        updateSnakeOnField();
 
         if (nextCell == Cell.FOOD) {
             placeFood();
@@ -103,17 +111,6 @@ public class Game {
         }
     }
 
-    void updateSnakeOnField() {
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                if (field[y][x] == Cell.SNAKE) {
-                    field[y][x] = Cell.EMPTY;
-                }
-            }
-        }
-        snake.forEach((pos) -> setCell(pos, Cell.SNAKE));
-    }
-
     Cell getCell(Pos pos) {
         return field[pos.y][pos.x];
     }
@@ -127,13 +124,13 @@ public class Game {
     }
 
     private Pos getRandomFreeCell() {
-        int x = 0;
-        int y = 0;
-        while (field[y][x] != Cell.EMPTY) {
+        int x;
+        int y;
+       do {
             y = random.nextInt(height);
             x = random.nextInt(width);
-        }
-        return new Pos(x, y);
+        } while (field[y][x] != Cell.EMPTY);
+            return new Pos(x, y);
     }
 
     static class Pos {

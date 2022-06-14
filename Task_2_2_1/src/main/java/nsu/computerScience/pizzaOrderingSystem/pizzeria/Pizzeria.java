@@ -3,6 +3,7 @@ package nsu.computerScience.pizzaOrderingSystem.pizzeria;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nsu.computerScience.pizzaOrderingSystem.pizzeria.model.DeliveryAcknowlegement;
 import nsu.computerScience.pizzaOrderingSystem.pizzeria.model.Pizza;
+import nsu.computerScience.pizzaOrderingSystem.pizzeria.model.Order;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,11 +19,11 @@ public class Pizzeria {
     private boolean running;
 
     Pizzeria(PizzeriaOptions options) {
-        orders = new SynchronizedQueue<>(options.orderQueueSize);
-        SynchronizedQueue<Pizza> pizzaStorage = new SynchronizedQueue<>(options.storageSize);
-        ackQueue = new SynchronizedQueue<>(100);
-        bakerManager = new WorkerManager<>(orders, pizzaStorage, options.bakers);
-        deliveryManager = new WorkerManager<>(pizzaStorage, ackQueue, options.deliverymen);
+        orders = new SynchronizedQueue<>(options.getOrderQueueSize());
+        SynchronizedQueue<Pizza> pizzaStorage = new SynchronizedQueue<>(options.getStorageSize());
+        ackQueue = new SynchronizedQueue<>(options.getAckQueueSize());
+        bakerManager = new WorkerManager<>(orders, pizzaStorage, options.getBakers());
+        deliveryManager = new WorkerManager<>(pizzaStorage, ackQueue, options.getDeliverymen());
 
         pizzeriaThread = new Thread(this::run);
     }

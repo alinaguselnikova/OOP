@@ -6,7 +6,7 @@ import java.util.List;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public abstract class Worker<T, R> {
-    String name;
+    protected String name;
 
     protected void log(String message) {
         System.out.printf("[%s %s] %s%n", getClass().getSimpleName(), name, message);

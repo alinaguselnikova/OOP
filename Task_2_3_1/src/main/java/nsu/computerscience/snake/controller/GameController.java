@@ -25,40 +25,34 @@ public class GameController implements EventHandler<KeyEvent> {
         game = new Game(width, height, wallCount);
         tickDelayMs = (int) (1000.0 / speed);
 
-
-        if (gameThread == null) {
+        if (gameThread != null) {
+            gameThread.interrupt();
+        }
             gameThread = new Thread(this::runGame);
             gameThread.setDaemon(true);
             gameThread.start();
-        } else {
-            gameThread.interrupt();
-        }
     }
 
     private void runGame() {
         while (!Thread.interrupted()) {
             game.tick();
 
-            var field = new ArrayList<List<Cell>>(game.getHeight());
-            for (int y = 0; y < game.getHeight(); y++) {
-                field.add(new ArrayList<>(game.getWidth()));
-                for (int x = 0; x < game.getWidth(); x++) {
-                    field.get(y).add(game.getField()[y][x]);
-                }
-            }
+            var field = game.getField();
+
             int score = game.getScore();
             boolean over = game.isGameOver();
             // This will run in UI thread
             // So we copy data for thread safety
             Platform.runLater(() -> {
                 this.score.setValue(score);
-                this.isGameOver.setValue(over);
+                isGameOver.setValue(over);
                 this.field.setValue(field);
             });
             try {
-                Thread.sleep(tickDelayMs);
+                Thread.sleep(100 + (tickDelayMs / (score + 1)));
                 // we use interrupted exception to signal that new game hase begun
             } catch (InterruptedException ignored) {
+                break;
             }
         }
     }
