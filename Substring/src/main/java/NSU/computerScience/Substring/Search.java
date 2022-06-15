@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class Search {
 
-    public static int[] zFunction(String template, String source) {
+    private static int[] zFunction(String template, String source) {
         int sourceLen = source.length();
         int templateLen = template.length();
 
@@ -33,14 +33,28 @@ public class Search {
         return z;
     }
 
-    public static ArrayList<Integer> SearchSubstring(String template, Reader textFile) throws IOException {
+    //public static ArrayList<Integer> SearchSubstring(String template, String text) throws IOException {
+    //return SearchSubstring(template, new StringReader(text));
+
+    /**
+     * @param template A String which we try to find in Text
+     * @param textFile A Reader textFile where we try to find a Template
+     * @return List of Indexecies where Template starts
+     * @throws IOException
+     *
+     * SearchSubstring работает с String template, который является подстрокой, которую необходимо найти и с
+     * Reader textFile, в котором необходимо найти данную подстроку.
+     * Если размер входного файла намного больше объёма оперативной памяти, для ускорения считывания использовать
+     * класс BufferedReader.
+     * Считывание из textFile происходит с произвольного индекса, который можно изменить.
+     */
+    public static ArrayList<Integer> SearchSubstring(String template, Reader text) throws IOException {
         int templateLen = template.length();
         if (templateLen == 0) return null;
 
         final int bufferSize = 8 * templateLen;
         char[] buffer = new char[bufferSize];
-
-        BufferedReader text = new BufferedReader(textFile);
+        //BufferedReader text = new BufferedReader(textFile);
         int buffCount = text.read(buffer, 0, bufferSize);
         int numberOfElements = buffCount;
         if (buffCount == -1) return null;

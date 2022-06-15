@@ -1,0 +1,31 @@
+{
+  "orderQueueSize": 10,
+  "storageSize": 5,
+  "ackQueueSize": 100,
+  "bakers": [
+    {
+      "name": "Vasya",
+      "cookTime": 2
+    },
+    {
+      "name": "Chuchmek",
+      "cookTime": 3
+    },
+    {
+      "name": "Terminator",
+      "cookTime": 1
+    }
+  ],
+  "deliverymen": [
+    {
+      "name": "Slow",
+      "deliveryTime": 7,
+      "trunkSize": 4
+    },
+    {
+      "name": "Fast",
+      "deliveryTime": 5,
+      "trunkSize": 2
+    }
+  ]
+}
