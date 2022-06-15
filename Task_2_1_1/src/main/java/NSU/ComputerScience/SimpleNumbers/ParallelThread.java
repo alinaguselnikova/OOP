@@ -1,16 +1,15 @@
 package NSU.ComputerScience.SimpleNumbers;
 
-import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class ParallelThread {
-    static int THREADS = Runtime.getRuntime().availableProcessors();
-    static boolean notPrime = false;
     public static Integer[] arr1;
+    static int THREADS = Runtime.getRuntime().availableProcessors();
+    static AtomicBoolean notPrime = new AtomicBoolean(false);
 
     public static boolean ThreadSearch(Integer[] arr, int NumberOfThreads) {
-//        System.out.print("Parallel Thread = ");
-        long time_start = System.currentTimeMillis();
+        notPrime.set(false);
         if (NumberOfThreads > 0 && NumberOfThreads < THREADS) THREADS = NumberOfThreads;
         Thread[] thr = new Thread[THREADS];
         arr1 = arr;
@@ -20,23 +19,24 @@ public class ParallelThread {
             thr[i].start();
         }
 
-        //one thread have to wait for another thread to finish
-        try{
-            for (int i = 0; i < THREADS; i++){
+        try {
+            for (int i = 0; i < THREADS; i++) {
                 thr[i].join();
 
             }
-        }catch (InterruptedException ignored){}
+        } catch (InterruptedException ignored) {
+        }
 
-//        System.out.println((System.currentTimeMillis() - time_start) + "ms");
-        return notPrime;
+        return notPrime.get();
     }
-        public static Integer[] getArray() {
+
+    public static Integer[] getArray() {
         return arr1;
     }
-        public synchronized static void setIsNotPrime() {
-        notPrime = true;
-        }
+
+    public synchronized static void setIsNotPrime() {
+        notPrime.set(true);
+    }
 
 }
 
@@ -50,13 +50,16 @@ class PrimeRun implements Runnable {
     }
 
     public void run() {
-        for(int i = ID; i < array.length; i+=ParallelThread.THREADS) {
+        for (int i = ID; i < array.length; i += ParallelThread.THREADS) {
             if (PrimeNumbers.isNotPrime(array[i])) {
                 System.out.println(i);
                 ParallelThread.setIsNotPrime();
                 break;
             }
-        }
+            if (ParallelThread.notPrime.get()) {
+                break;
+            }
         }
     }
+}
 

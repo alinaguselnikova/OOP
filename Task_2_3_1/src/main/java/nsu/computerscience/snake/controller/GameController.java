@@ -1,6 +1,6 @@
 package nsu.computerscience.snake.controller;
 
-import javafx.application.Platform;
+import javafx.animation.AnimationTimer;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -10,51 +10,26 @@ import nsu.computerscience.snake.model.Cell;
 import nsu.computerscience.snake.model.Game;
 import nsu.computerscience.snake.model.SnakeDirection;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameController implements EventHandler<KeyEvent> {
     public final SimpleIntegerProperty score = new SimpleIntegerProperty(0);
     public final SimpleBooleanProperty isGameOver = new SimpleBooleanProperty(true);
     public final SimpleObjectProperty<List<List<Cell>>> field = new SimpleObjectProperty<>();
-    Thread gameThread;
+    AnimationTimer gameLogicTimer;
     Game game;
     int tickDelayMs;
 
     public void reset(int width, int height, int wallCount, float speed) {
+        if (gameLogicTimer != null) gameLogicTimer.stop();
+
+
         game = new Game(width, height, wallCount);
         tickDelayMs = (int) (1000.0 / speed);
 
-        if (gameThread != null) {
-            gameThread.interrupt();
-        }
-            gameThread = new Thread(this::runGame);
-            gameThread.setDaemon(true);
-            gameThread.start();
-    }
+        gameLogicTimer = new GameLogicTimer();
+        gameLogicTimer.start();
 
-    private void runGame() {
-        while (!Thread.interrupted()) {
-            game.tick();
-
-            var field = game.getField();
-
-            int score = game.getScore();
-            boolean over = game.isGameOver();
-            // This will run in UI thread
-            // So we copy data for thread safety
-            Platform.runLater(() -> {
-                this.score.setValue(score);
-                isGameOver.setValue(over);
-                this.field.setValue(field);
-            });
-            try {
-                Thread.sleep(100 + (tickDelayMs / (score + 1)));
-                // we use interrupted exception to signal that new game hase begun
-            } catch (InterruptedException ignored) {
-                break;
-            }
-        }
     }
 
     @Override
@@ -74,6 +49,26 @@ public class GameController implements EventHandler<KeyEvent> {
             case S:
                 game.setDirection(SnakeDirection.DOWN);
                 break;
+        }
+    }
+
+    class GameLogicTimer extends AnimationTimer {
+        long latestUpdate = 0;
+
+        @Override
+        public void handle(long now) {
+            var delayMs = 100 + (tickDelayMs / (game.getScore() + 1));
+
+            if (latestUpdate + delayMs * 1000000L > now) {
+                return;
+            }
+            latestUpdate = now;
+
+            game.tick();
+
+            score.setValue(game.getScore());
+            isGameOver.setValue(game.isGameOver());
+            field.setValue(game.getField());
         }
     }
 }

@@ -83,7 +83,7 @@ public class Game {
         snake.add(0, nextPos);
         setCell(nextPos, Cell.SNAKE);
         if (nextCell != Cell.FOOD) {
-            var lastCell =  snake.remove(snake.size() - 1);
+            var lastCell = snake.remove(snake.size() - 1);
             setCell(lastCell, Cell.EMPTY);
         } else {
             score++;
@@ -126,11 +126,11 @@ public class Game {
     private Pos getRandomFreeCell() {
         int x;
         int y;
-       do {
+        do {
             y = random.nextInt(height);
             x = random.nextInt(width);
         } while (field[y][x] != Cell.EMPTY);
-            return new Pos(x, y);
+        return new Pos(x, y);
     }
 
     static class Pos {
